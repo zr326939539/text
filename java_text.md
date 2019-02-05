@@ -31,3 +31,30 @@ MYISAM：既不支持事务，也不支持外键，尤其是访问速度快，�
         每个MyISAM在磁盘上存储成3个文件，其中文件名和表名都相同，但是扩展名分别为 frm存储表定义 myd存储数据 myi 存储索引
         
 INNODB: InnoDB存储引擎提供了具有提交，回滚和崩溃恢复能力的事务安全，但是对比MyISAM的存储引擎，InnoDB写的处理效率差一些并且会占用更多的磁盘空间以保留数据和索引
+
+SQL常用数据类型
+double double(5,2)表示最多5位，其中有2位小数
+char 
+varchar 可变长度字符串类型
+text 字符串类型
+blob 二进制类型
+date 日期类型 yyyy-MM-dd
+time 时间类型 hh:mm:ss
+datetime 日期时间类型 yyyy-MM-dd hh:mm:ss
+
+#### DDL 数据定义语言 用来定义数据库对象：创建库，表，列等。
+查看表结构: desc 表名;
+创建数据库：create database 数据库名 character set utf8;
+创建表： create table 表名（列名 数据类型（如果是char类型需要注明字符串长度））;
+e.g. create table students (id int, name varchar(255),age int, email varchar(255));
+添加一列： ALTER TABLE 表名 ADD 列名 数据类型;
+修改字段类型： ALTER TABLE 表名 MODIFY 列名 数据类型;
+删除一列：ALTER TABLE 表名 DROP 列名;
+修改表名： RENAME TABLE 原始表名 TO 要修改的表名;
+查看表的创建细节：show create table 表名;
+修改表的字符集: ALTER TABLE 表名 character set 字符集名称;
+修改表的列名: ALTER TABLE CHANGE 原始列名 新列名 数据类型;
+删除表: DROP TABLE 表名;
+#### DML 数据操纵语言 用来操作数据库表中记录
+#### DQL 数据查询语言 用来查询数据
+#### DCL 数据控制语言 用来定义访问权限和安全级别
