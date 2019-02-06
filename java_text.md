@@ -56,5 +56,45 @@ e.g. create table students (id int, name varchar(255),age int, email varchar(255
 修改表的列名: ALTER TABLE CHANGE 原始列名 新列名 数据类型;
 删除表: DROP TABLE 表名;
 #### DML 数据操纵语言 用来操作数据库表中记录
+查询表中数据：select * from 表名;
+插入操作： insert into 表名 (列名1，列名2,...) values (列值1,列值2...);
+更新操作：update 表名 set 列名1=列值1，列名2=列值2。。。where 列名=值
+修改数据库密码：
+use mysql;
+update user set password=password('abc') WHERE User='root' and Host='localhost';
+flush privileges; 刷新mysql的系统权限表
+
+mysqladmin -u root -p password 1234
+
+删除操作：
+delete from 表名 where 列名=值;  删除指定数据或所有数据，数据可以找回
+truncate table 表名; 把表直接drop掉，然后再创建一个同样的新表，数据不能找回
 #### DQL 数据查询语言 用来查询数据
+查询所有列：select * from 表名;
+结果集：通过查询语句查询出来的数据以表的形式展示我们称这个表为虚拟结果集，存放在内存中。查询返回的结果是一张虚拟表。
+
+查询指定的列：select 列名1，列名2... from 表名;
+
+条件查询：条件查询就是在查询时给出where 字句，在where字句中可以使用一些运算符及关键字；
+关键字及运算符： =，!=,<,>,<=,>=
+               between ... and 值在什么范围
+               in (set) 固定的范围值
+               is null; is not null; （为空或不为空）
+               and
+               or
+               not
+性别为男，年龄为20         SELECT * from students where age=20 AND gender='男';
+学号为1001或者名为zs的记录 SELECT * from students where id=1001 OR name='zs';
+查询学号为1001,1002,1003的记录 SELECT * from students where id in (1001,1002,1003);
+查询年龄为null的记录 SELECT * from students where age is null;
+查询性别非男的记录 SELECT * from students where gender != '男';
+查询年龄在18到20之间的记录 SELECT * from students where age BETWEEN 18 AND 20; 
+SELECT * from students where age >= 18 AND age <= 20; 
+
+模糊查询：
+根据指定的关键字查询
+使用LIKE关键字后跟通配符
+
+查询姓名为五个字母构成的学生记录  SELECT * from students where name LIKE '_____'; 五个下划线
+
 #### DCL 数据控制语言 用来定义访问权限和安全级别
