@@ -96,5 +96,65 @@ SELECT * from students where age >= 18 AND age <= 20;
 使用LIKE关键字后跟通配符
 
 查询姓名为五个字母构成的学生记录  SELECT * from students where name LIKE '_____'; 五个下划线
+查询姓名为五个字母构成的学生记录 第五个字母为s SELECT * from students where name LIKE '____s';
+查询以'm'开头的学生记录  SELECT * from students where name LIKE 'm%';
+查询以第二个字母是'u'的学生记录  SELECT * from students where name LIKE '_u%';
+查询姓名中包含's'的学生记录 SELECT * from students where name LIKE '%s%';
+通配符  _ 任意一个字符
+       % 任意多个字符
 
+字段控制查询
+        去除重复记录 select distinct (列名) from 表名
+        把查询的结果进行运算 select *,列名1+列名2 from 表名; 
+        IFNULL(exp1,exp2) 如果exp1字段为null，就把其值设为exp2
+        对查询结果起名 select *,列名1+列名2 AS 别名 from 表名; 
+        
+ 排序
+        使用关键字ORDER BY
+        升序 ASC 从小到大（默认）
+        降序 DESC 从大到小  
+        select * from employee order by salary asc;
+        select * from employee order by salary desc, id desc;
+        
+ 聚合函数 
+        对查询结果进行统计计算
+        count：统计指定列不为null的记录行数 
+        select count(*) from employees;
+        select count(*) from employee where salary > 2500;
+        select count(*) from employee where IFNULL(salary,0)+IFNULL(performance,0) > 5000;
+        
+        max：计算指定列最大值 
+        select max(salary) from employee;
+        
+        min：计算指定列最小值 
+        select min(salary) from employee;
+        
+        sum：计算指定列和
+        select sum(salary) from employee;
+        select sum(salary),sum(performance) from employee;
+        select sum(salary+IFNULL(performance,0)) from employee;
+        
+        avg：计算指定列平均值
+        select avg(salary) from employee;
+        
+分组查询
+        字段值相同的归为一组 group by
+        当group by 单独使用时，只显示每组的第一条记录
+        select * from employee group by gender;
+        select department,group_concat(name) from employee group by department;
+        select后面跟着的字段一般也跟在group by 后面
+        select gender,name from employee group by gender,name;
+        select gender,group_concat(name) from employee group by gender;
+        select department,sum(salary) from employee group by department;
+        在group by 后面的条件需要使用Having
+        SELECT department,GROUP_CONCAT(salary),sum(salary) from employee group by department HAVING SUM(salary)>=9000;
+        HAVING是在分组后对数据进行过滤，WHERE是在分组前对数据进行过滤，HAVING后面可以使用聚合函数，WHERE后面不可以使用聚合函数
+        
+        书写顺序
+        select + from + where + group by + having + order by + limit
+        
+        Limit 用法 指定从哪个位置开始，一次查多少数据
+        limit 参数1，参数2 参数1：从哪一行开始查 参数2：查多少条数据
+        
+        
 #### DCL 数据控制语言 用来定义访问权限和安全级别
