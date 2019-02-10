@@ -1,4 +1,3 @@
-### Java 笔记
 ### MYSQL笔记
 1. 表：具有固定的列数，和任意的行数
 2. 数据库：数据库是一些关联表的集合
@@ -156,5 +155,100 @@ SELECT * from students where age >= 18 AND age <= 20;
         Limit 用法 指定从哪个位置开始，一次查多少数据
         limit 参数1，参数2 参数1：从哪一行开始查 参数2：查多少条数据
         
+数据完整性 输入数据是正确的
+添加约束
+实体完整性：一行表示一个实体
+主键约束 每个表中要有一个主键，主键可以唯一区分，不能为null
+添加方式        create table 表名 (列名1 类型 primary key,...);
+联合主键 几个字段同时设置为主键，某个字段重复可以，但是不可以全部字段重复
+
+为创建好的表添加主键：alter table 表名 add constraint primary key(字段名);
+
+唯一约束
+        指定列的数据不能重复，可以为null
+        create table 表名(字段名1 数据类型 unique,...);
+
+自动增长列
+        指定列的数据自动增长
+        即使数据删除，还是从删除的序号继续往下
+        create table 表名(字段名1 数据类型 auto_increment,...);
+
+域完整性
+        限制此单元格的数据正确，不对照此列的单元格比较
+        约束：数据类型
+             非空约束 not null
+             默认值约束 default
+
+参照完整性
+        建立表与表之间的一种对应关系
         
-#### DCL 数据控制语言 用来定义访问权限和安全级别
+表与表之间关系 
+        一对一
+        一对多
+        多对多
+        ALTER TABLE tea_st_rel ADD CONSTRAINT FOREIGN KEY(tid) REFERENCES teacher(tid); 添加外键
+        
+ 合并结果集： Union合并时去重 select * from 表1 union select * from 表2;
+             Union All 合并时不去重 select * from 表1 union all select * from 表2;
+             被合并的两个结果，列数必须相同。
+             
+连接查询 关联多个表查询
+笛卡尔积 A={a,b} B={0,1,2}
+A和B的笛卡尔积 (a,0),(a,1),(a,2),(b,0),(b,1),(b,2)
+select * from stu,score where stu.id=score.id;
+       连接方式 内连接 INNER_JOIN 等值连接 两个表同时出现的id号才显示
+                        select * from stu st inner join score sc on st.id=sc.sid;
+               外连接 左外连接 把左边不相同的数据也摆出来，右边只把相同数据摆出来。
+               select * from stu st left outer join score sc on st.id=sc.sid;
+               右外连接
+               select * from stu st right outer join score sc on st.id=sc.sid;
+               自然连接
+               自然连接会自动给出主外键等式，去除相同的列。
+               select * from stu natural join score;
+子查询 一个select语句中包含另一个完整的select语句。或两个以上的select，那么就是子查询语句了。
+子查询出现的位置：
+where后，把select查询出来的结果当作另一个select的条件值  
+select ename from emp where deptno =(select depto from emp where ename='项羽');
+
+from后，把查询出来的结果当作一个新表
+select ename from 
+(select ename,salary,deptno from emp where deptno = 30) s 
+where s.salary > 2000;
+自连接
+
+常用函数 1.字符串函数  
+        select CONCAT('aaa','bbb','ccc'); aaabbbccc任何字符串与null连接都是null  
+        select insert('myxq123',5,3,'lk'); 从第五个位置开始后面3个字符变成lk
+        LOWER(STR) HIGHER(STR)
+        left(str,x) 从左边获取x个字符
+        LPAD(str,x,str);
+        2.数值函数
+        3.日期和时间函数
+        4.流程函数
+        5.其它函数
+        
+        
+事务
+        一组不可分割操作
+        事务的四个特性ACID 原子性，一致性，隔离性，持久性
+        
+        开启事务 start transaction;
+        提交事务 commit;
+        回滚事务 当遇到突发情况 撤销已经执行的SQL语句 rollback;
+        rollback需在commit之前执行
+        
+        事务的并发问题：
+        多人同时操作：
+        脏读：一个事务读了没提交事务时的数据，结果回滚事务， 解决方法：使用隔离级别read committed  
+        不可重复读：两次查询返回结果不同  解决方法：repeatable read,当开启事务时，不允许其他事务执行。
+        幻读：解决方法：serializable 串行化
+        
+        事务隔离级别     脏读   不可重复读     幻读
+        读未提交         是           是      是
+        不可重复读       否           是      是
+        可重复读         否           否      是
+        串行化           否           否      否
+        
+ 权限操作
+ 视图简介  对若干表的引用，一张虚表，查询语句执行的结果
+#### DCL 数据控制 语言 用来定义访问权限和安全级别
